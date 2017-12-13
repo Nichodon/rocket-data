@@ -2,7 +2,7 @@ from Tkinter import *
 from math import *
 
 tk = Tk()
-canvas = Canvas(tk, width=900, height=900)
+canvas = Canvas(tk, width=850, height=850)
 canvas.pack()
 
 settings = Tk()
@@ -36,7 +36,7 @@ l4.grid(row=3, column=0, padx=10, pady=10)
 
 s4 = Spinbox(settings, from_=0, to=100)
 s4.grid(row=3, column=1, padx=10, pady=10)
-s4.insert(END, 30)
+s4.insert(END, 25)
 s4.delete(0)
 
 def update():
@@ -53,7 +53,7 @@ def update():
     for line in f:
         m += 1
         if m > t:
-            n = m - t
+            n = m - t + 50 * i
             try: 
                 a[0] += float(line.split(',')[1]) * s
                 a[1] += float(line.split(',')[2]) * s
@@ -61,40 +61,50 @@ def update():
                 if n % i == 0:
                     z = abs(a[0]) + abs(a[1]) + abs(a[2])
                     for j in range(3):
-                        canvas.create_line(n / i, -z / i + j * 300 + 150,
-                                           n / i, z / i + j * 300 + 150,
+                        canvas.create_line(n / i, -z / i + j * 250 + 175,
+                                           n / i, z / i + j * 250 + 175,
                                            fill='#ccc')
                     
-                    canvas.create_line(n / i, 150, n / i,
-                                       a[0] / i + 150, fill='#fcc')
-                    canvas.create_line(n / i, 450, n / i,
-                                       a[1] / i + 450, fill='#cfc')
-                    canvas.create_line(n / i, 750, n / i,
-                                       a[2] / i + 750, fill='#ccf')
+                    canvas.create_line(n / i, 175, n / i,
+                                       a[0] / i + 175, fill='#fcc')
+                    canvas.create_line(n / i, 425, n / i,
+                                       a[1] / i + 425, fill='#cfc')
+                    canvas.create_line(n / i, 675, n / i,
+                                       a[2] / i + 675, fill='#ccf')
 
-                    canvas.create_line(n / i - 1, l[0] / i + 150, n / i,
-                                       a[0] / i + 150, fill='#c99')
-                    canvas.create_line(n / i - 1, l[1] / i + 450, n / i,
-                                       a[1] / i + 450, fill='#9c9')
-                    canvas.create_line(n / i - 1, l[2] / i + 750, n / i,
-                                       a[2] / i + 750, fill='#99c')
+                    canvas.create_line(n / i - 1, l[0] / i + 175, n / i,
+                                       a[0] / i + 175, fill='#c99')
+                    canvas.create_line(n / i - 1, l[1] / i + 425, n / i,
+                                       a[1] / i + 425, fill='#9c9')
+                    canvas.create_line(n / i - 1, l[2] / i + 675, n / i,
+                                       a[2] / i + 675, fill='#99c')
                     
                     l[0] = a[0]
                     l[1] = a[1]
                     l[2] = a[2]
                     a = [0, 0, 0]
 
-                    if n / i > 900:
+                    if n / i >= 799:
                         break
             except IndexError:
                 pass
 
-    canvas.create_line(0, 150, 1000, 150, fill='#966')
-    canvas.create_line(0, 450, 1000, 450, fill='#696')
-    canvas.create_line(0, 750, 1000, 750, fill='#669')
-    
-    canvas.create_line(0, 300, 1000, 300, fill='#ccc')
-    canvas.create_line(0, 600, 1000, 600, fill='#ccc')
+    canvas.create_line(50, 175, 800, 175, fill='#966')
+    canvas.create_line(50, 425, 800, 425, fill='#696')
+    canvas.create_line(50, 675, 800, 675, fill='#669')
+
+    for j in range(16):
+        canvas.create_text((j + 1) * 50, 825, text=t + 50 * (j + 1) * i,
+                           fill='#666')
+        canvas.create_text((j + 1) * 50, 25, text=t + 50 * (j + 1) * i,
+                           fill='#666')
+    for h in range(3):
+        for j in range(9):
+            k = int(2500 * float(4 - j) / s)
+            canvas.create_text(825, (j + 3) * 25 + h * 250, text=k,
+                               fill='#666')
+            canvas.create_text(25, (j + 3) * 25+ h * 250, text=k,
+                               fill='#666')
 
 update()
 
