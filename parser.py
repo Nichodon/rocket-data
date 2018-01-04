@@ -35,7 +35,7 @@ s3.delete(0)
 l4 = Label(settings, text='Y Scale')
 l4.grid(row=3, column=0, padx=10, pady=10)
 
-s4 = Spinbox(settings, from_=0, to=100)
+s4 = Spinbox(settings, from_=0, to=10000)
 s4.grid(row=3, column=1, padx=10, pady=10)
 s4.insert(END, 4000)
 s4.delete(0)
@@ -60,11 +60,11 @@ def make():
     s = float(s4.get()) / 100
     canvas.delete('line')
     canvas.create_line(current, 0, current, 850, tag='line', fill='#999')
-    b = float(int(data[0][current - 51] * 100)) / 100
+    b = float(int(data[0][current - 50] * 100)) / 100
     canvas.create_text(current, 175 - b * s / 100, tag='line', fill='#633', text=b)
-    b = float(int(data[1][current - 51] * 100)) / 100
+    b = float(int(data[1][current - 50] * 100)) / 100
     canvas.create_text(current, 425 - b * s / 100, tag='line', fill='#363', text=b)
-    b = float(int(data[2][current - 51] * 100)) / 100
+    b = float(int(data[2][current - 50] * 100)) / 100
     canvas.create_text(current, 675 - b * s / 100, tag='line', fill='#336', text=b)
 
 def left(e):
@@ -105,21 +105,25 @@ def integrate():
     
 def update():
     global s1, canvas, data, current, thing, grated
+    d = s1.get()
+    f = 0
+    try:
+        f = open('data/LOG' + d + '.txt', 'r')
+    except IOError:
+        return
     thing = 0
     stop = True
     data = [[], [], [], []]
     grated = [[], [], []]
-    current = int(s6.get()) + 50
+    current = max(min(int(s6.get()) + 50, 799), 50)
     canvas.delete('all')
-    d = s1.get()
-    t = int(s2.get())
-    i = int(s3.get())
-    s = float(s4.get()) / 100
+    t = max(min(int(s2.get()), 20000), 0)
+    i = max(min(int(s3.get()), 100), 1)
+    s = max(min(float(s4.get()), 10000), 0) / 100
     o = int(s5.get()) * 3
     m = 0
     a = [0, 0, 0]
     l = [0, 0, 0]
-    f = open('data/LOG' + d + '.txt', 'r')
     #print current
     for line in f:
         m += 1
